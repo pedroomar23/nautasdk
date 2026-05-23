@@ -1,7 +1,7 @@
 //
-//  sessionDelegate.swift
+//  tiendaExamples.swift
 //
-//  Copyright (c) 2026 Pedro Omar 
+//  Copyright (c) 2026 Pedro Omar
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -22,24 +22,10 @@
 //  THE SOFTWARE.
 //
 
-import Foundation
-#if os(iOS)
-import UIKit
-#else
-import AppKit
-#endif
+import SwiftUI
+import Combine
+import TiendaSdk
 
-class SesionDelegate: NSObject, URLSessionDelegate, @unchecked Sendable {
-    static let shared = SesionDelegate()
+final class TiendaRequest: ObservableObject {
     
-    func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
-        let credentials = URLCredential(trust: challenge.protectionSpace.serverTrust!)
-        completionHandler(.useCredential, credentials)
-    }
-    
-    func urlSession(_ session: URLSession, task: URLSessionTask, willPerformHTTPRedirection response: HTTPURLResponse, newRequest request: URLRequest, completion: @escaping (URLRequest?) -> Void) {
-        var newRequest = request
-        newRequest.httpShouldHandleCookies = true
-        completion(request)
-    }
 }

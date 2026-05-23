@@ -1,5 +1,5 @@
 //
-//  sessionDelegate.swift
+//  nautaExamples.swift
 //
 //  Copyright (c) 2026 Pedro Omar 
 //
@@ -22,24 +22,37 @@
 //  THE SOFTWARE.
 //
 
-import Foundation
-#if os(iOS)
-import UIKit
-#else
-import AppKit
-#endif
+import SwiftUI
+import Combine 
+import NautaSdk 
 
-class SesionDelegate: NSObject, URLSessionDelegate, @unchecked Sendable {
-    static let shared = SesionDelegate()
-    
-    func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
-        let credentials = URLCredential(trust: challenge.protectionSpace.serverTrust!)
-        completionHandler(.useCredential, credentials)
+final class NautaRequest: ObservableObject {
+    /// - Call to the api
+    let nautaApi = NautaApi.shared 
+
+    // MARK: - Login 
+
+    func login() async {
+        await nautaApi.login(username: "username", password: "password", idRequest: "idRequest", captchatext: "captchatext", tipoCuenta: "tipoCuenta") { result in 
+            switch result {
+                case let .success(model):
+                    print("✅ DEBUG: LOGIN SUCCESS \(model)")
+                case let .failure(error): 
+                    print("❌ DEBUG: LOGIN FAILURE \(error.localizedDescription)")
+            }
+        }
     }
-    
-    func urlSession(_ session: URLSession, task: URLSessionTask, willPerformHTTPRedirection response: HTTPURLResponse, newRequest request: URLRequest, completion: @escaping (URLRequest?) -> Void) {
-        var newRequest = request
-        newRequest.httpShouldHandleCookies = true
-        completion(request)
+
+    // MARK: - Captcha 
+
+    func getCaptcha() async {
+        await nautaApi.captcha { result in 
+            switch result {
+                case let .success(model):
+                    print("✅ DEBUG: LOGIN SUCCESS \(model)")
+                case let .failure(error): 
+                    print("❌ DEBUG: LOGIN FAILURE \(error.localizedDescription)")
+            }
+        }
     }
 }
