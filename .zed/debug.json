@@ -1,0 +1,19 @@
+// Project-local debug tasks
+//
+// For more documentation on how to configure debug tasks,
+// see: https://zed.dev/docs/debugger
+
+[
+  {
+    "languages": {
+      "Swift": {
+        "enable_language_server": true,
+        "language_servers": ["sourcekit-lsp"],
+        "formatter": "language_server",
+        "format_on_save": "on",
+        "tab_size": 4,
+        "hard_tabs": false
+      }
+    }
+  }
+]

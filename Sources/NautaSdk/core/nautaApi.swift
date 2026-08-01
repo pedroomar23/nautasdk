@@ -1,7 +1,7 @@
 //
 //  nautaApi.swift
 //
-//  Copyright (c) 2026 Pedro Omar 
+//  Copyright (c) 2026 Pedro Omar
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -23,27 +23,27 @@
 //
 
 import Foundation
-import os.log 
+import os.log
 
 public class NautaApi: @unchecked Sendable {
     public static let shared = NautaApi()
     private let response = Network.shared
     private let logger = Logger()
-    
+
      // MARK: - Login
 
      public func login(username: String, password: String, tipoCuenta: String, idRequest: String, captchatext: String, completion: @escaping (Result<LoginResponse, NetWorkError>) -> Void) async {
         let params = LoginRequest(
-            username: username, 
-            password: password, 
-            tipoCuenta: tipoCuenta, 
-            idRequest: idRequest, 
+            username: username,
+            password: password,
+            tipoCuenta: tipoCuenta,
+            idRequest: idRequest,
             captchatext: captchatext
         )
 
         logger.info("✅ DEBUG: Iniciando Solicitud a POST")
 
-        await response.sendResponse(router: NautaRouter.login(params: params), type: LoginResponse.self) { result in 
+        await response.sendResponse(router: NautaRouter.login(params: params), type: LoginResponse.self) { result in
             switch result {
                 case let .success(model):
                     completion(.success(model))
@@ -52,19 +52,21 @@ public class NautaApi: @unchecked Sendable {
             }
         }
      }
-    
+
     // MARK: - Captcha
 
     public func getCaptcha(completion: @escaping (Result<Captcha, NetWorkError>) -> Void) async {
-        await response.sendResponse(router: NautaRouter.captcha, type: Captcha.self) { result in 
+        await response.sendResponse(router: NautaRouter.captcha, type: Captcha.self) { result in
             switch result {
-                case let .success(model): 
+                case let .success(model):
                     completion(.success(model))
-                case let .failure(error): 
+                case let .failure(error):
                     completion(.failure(.jsonError(msg: error.localizedDescription)))
             }
         }
     }
-    
+
     // MARK: - Users
+
+
 }
