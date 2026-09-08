@@ -1,7 +1,7 @@
 //
 //  captcha.swift
 //
-//  Copyright (c) 2026 Pedro Omar 
+//  Copyright (c) 2026 Pedro Omar
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -27,21 +27,27 @@ import Foundation
 // MARK: - Captcha
 
 public struct Captcha: Decodable, Hashable, Encodable, Sendable {
-    public let text: String
-    public let data: String
-    
+    public var text: String
+    public var data: String
+
     enum CodingKeys: String, CodingKey {
         case text, data
     }
-    
+
     public init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.text = try container.decode(String.self, forKey: .text)
         self.data = try container.decode(String.self, forKey: .data)
     }
-    
+
     public init(text: String, data: String) {
         self.text = text
         self.data = data
+    }
+}
+
+extension Captcha: CustomStringConvertible {
+    public var description: String {
+        return "text: \(text), data: \(data)"
     }
 }

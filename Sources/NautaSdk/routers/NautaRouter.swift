@@ -1,7 +1,7 @@
 //
 //  performResponse.swift
 //
-//  Copyright (c) 2026 Pedro Omar 
+//  Copyright (c) 2026 Pedro Omar
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -28,7 +28,7 @@ enum NautaRouter {
     /// - URL Api
     private static let urlApi = "https://wwww.nauta.cu:5002"
     /// - Login
-    case login(params: LoginRequest)
+    case login(params: String)
     /// - Captcha
     case captcha
     /// - Users
@@ -59,8 +59,8 @@ enum NautaRouter {
     /// - Parameters
     private var parameters: Data? {
         switch self {
-            case .login: return nil 
-            case .captcha: return nil 
+            case .login(let param): return param.data(using: .utf8)
+            case .captcha: return nil
             case .users(_, let token): return token.data(using: .utf8)
         }
     }
@@ -74,7 +74,7 @@ enum NautaRouter {
         if let parameters = parameters {
             urlRequest.httpBody = parameters
         }
-        
+
         return urlRequest
     }
 }

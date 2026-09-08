@@ -1,7 +1,7 @@
 //
 //  cliente.swift
 //
-//  Copyright (c) 2026 Pedro Omar 
+//  Copyright (c) 2026 Pedro Omar
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -32,4 +32,35 @@ public struct Cliente: Decodable, Hashable, Encodable, Sendable {
     public let notificaciones_movil: String
     public let usuario_portal: String
     public let operaciones: Operaciones
+
+    enum CodingKeys: String, CodingKey {
+        case nombre = "nombre"
+        case telefono = "telefono"
+        case email = "email"
+        case notificaciones_mail = "notificaciones_mail"
+        case notificaciones_movil = "notificaciones_movil"
+        case usuario_portal = "usuario_portal"
+        case operaciones = "operaciones"
+    }
+
+    public init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.nombre = try container.decode(String.self, forKey: .nombre)
+        self.telefono = try container.decode(String.self, forKey: .telefono)
+        self.email = try container.decode(String.self, forKey: .email)
+        self.notificaciones_mail = try container.decode(String.self, forKey: .notificaciones_mail)
+        self.notificaciones_movil = try container.decode(String.self, forKey: .notificaciones_movil)
+        self.usuario_portal = try container.decode(String.self, forKey: .usuario_portal)
+        self.operaciones = try container.decode(Operaciones.self, forKey: .operaciones)
+    }
+
+    public init(nombre: String, telefono: String, email: String, notificaciones_mail: String, notificaciones_movil: String, usuario_portal: String, operaciones: Operaciones) {
+        self.nombre = nombre
+        self.telefono = telefono
+        self.email = email
+        self.notificaciones_mail = notificaciones_mail
+        self.notificaciones_movil = notificaciones_movil
+        self.usuario_portal = usuario_portal
+        self.operaciones = operaciones
+    }
 }
