@@ -1,7 +1,7 @@
 //
 //  loginRequest.swift
 //
-//  Copyright (c) 2026 Pedro Omar 
+//  Copyright (c) 2026 Pedro Omar
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -30,13 +30,13 @@ public struct LoginRequest: Decodable, Hashable, Encodable, Sendable {
     public var username, password, tipoCuenta: String
     public var idRequest: String
     public var captchatext: String
-    
+
     enum CodingKeys: String, CodingKey {
         case username, password, tipoCuenta
         case idRequest
         case captchatext
     }
-    
+
     public init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.username = try container.decode(String.self, forKey: .username)
@@ -45,12 +45,21 @@ public struct LoginRequest: Decodable, Hashable, Encodable, Sendable {
         self.idRequest = try container.decode(String.self, forKey: .idRequest)
         self.captchatext = try container.decode(String.self, forKey: .captchatext)
     }
-    
+
     public init(username: String, password: String, tipoCuenta: String, idRequest: String, captchatext: String) {
         self.username = username
         self.password = password
         self.tipoCuenta = tipoCuenta
         self.idRequest = idRequest
         self.captchatext = captchatext
+    }
+
+    func jsonData() throws -> Data? {
+        return try? JSONEncoder().encode(self)
+    }
+
+    func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
+        let data = try? self.jsonData()!
+        return String(data: data!, encoding: encoding)
     }
 }

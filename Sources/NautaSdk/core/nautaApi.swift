@@ -33,22 +33,24 @@ public class NautaApi: @unchecked Sendable {
      // MARK: - Login
 
      public func login(username: String, password: String, tipoCuenta: String, idRequest: String, captchatext: String, completion: @escaping (Result<LoginResponse, NetWorkError>) -> Void) async {
-        let params = LoginRequest(
+        let params = try? LoginRequest(
             username: username,
             password: password,
             tipoCuenta: tipoCuenta,
             idRequest: idRequest,
             captchatext: captchatext
-        )
+        ).jsonString()!
 
         logger.info("✅ DEBUG: Iniciando Solicitud a POST")
 
-        await response.sendResponse(router: NautaRouter.login(params: params), type: LoginResponse.self) { result in
+        await response.sendResponse(router: NautaRouter.login(params: params!), type: LoginResponse.self) { result in
             switch result {
                 case let .success(model):
                     completion(.success(model))
+                    self.logger.debug("✅ DEBUG: JSON RESPONSE SUCCESS \(model)")
                 case let .failure(error):
                     completion(.failure(.jsonError(msg: error.localizedDescription)))
+                    self.logger.error("❌ DEBUG: JSON RESPONSE FAILURE: \(error.localizedDescription)")
             }
         }
      }
@@ -60,13 +62,26 @@ public class NautaApi: @unchecked Sendable {
             switch result {
                 case let .success(model):
                     completion(.success(model))
+                    self.logger.debug("✅ DEBUG: CAPTCHA RESPONSE SUCCESS \(model)")
                 case let .failure(error):
                     completion(.failure(.jsonError(msg: error.localizedDescription)))
+                    self.logger.error("❌ DEBUG: CAPTCHA RESPONSE FAILURE \(error.localizedDescription)")
             }
         }
     }
 
     // MARK: - Users
 
-
+    public func users(token: String, lastUpdate: String, completion: @escaping (Result<LoginResponse, NetWorkError>) -> Void) async {
+        await response.sendResponse(router: NautaRouter.users(token: token, lastUpdate: lastUpdate), type: LoginResponse.self) { result in
+            switch result {
+                case let .success(model):
+                    completion(.success(model))
+                    self.logger.debug("✅ DEBUG: JSON RESPONSE SUCCESS \(model)")
+                case let .failure(error):
+                    completion(.failure(.jsonError(msg: error.localizedDescription)))
+                    self.logger.error("❌ JSON RESPONSE FAILURE \(error.localizedDescription)")
+            }
+        }
+    }
 }
