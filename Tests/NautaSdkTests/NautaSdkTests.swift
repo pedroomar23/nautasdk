@@ -1,7 +1,7 @@
 //
 //  NautaSdkTests.swift
 //
-//  Copyright (c) 2026 Pedro Omar 
+//  Copyright (c) 2026 Pedro Omar
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -26,39 +26,39 @@ import XCTest
 @testable import NautaSdk
 
 final class NautaSdkTests: XCTestCase {
-    
+
     // MARK: - Captcha
-    
+
     func testCaptcha() async throws {
-        
+
     }
-    
+
     // MARK: - Test Login Request
-    
+
     func testLoginRequest() async throws {
         let jsonString = """
-            { 
-                "username": "usuario", 
-                "password": "Carlos*1998", 
-                "tipoCuenta": "USUARIO_PORTAL", 
-                "idRequest": "914376bba2444751e198170bf4e862336c8b7e83", 
-                "captchatext": "NUTDR9" 
-            } 
+            {
+                "username": "usuario",
+                "password": "Carlos*1998",
+                "tipoCuenta": "USUARIO_PORTAL",
+                "idRequest": "914376bba2444751e198170bf4e862336c8b7e83",
+                "captchatext": "NUTDR9"
+            }
         """
         let decoder = JSONDecoder()
         let jsonData = jsonString.data(using: .utf8)!
         let loginRequest = try decoder.decode(LoginRequest.self, from: jsonData)
         print("✅ DEBUG: JSON RESPONSE \(loginRequest)")
-        
+
         XCTAssertEqual(loginRequest.username, "usuario")
         XCTAssertEqual(loginRequest.password, "Carlos*1998")
         XCTAssertEqual(loginRequest.tipoCuenta, "USUARIO_PORTAL")
         XCTAssertEqual(loginRequest.idRequest, "914376bba2444751e198170bf4e862336c8b7e83")
         XCTAssertEqual(loginRequest.captchatext, "NUTDR9")
     }
-    
+
     // MARK: - Test Login Response
-    
+
     func testLoginResponse() async throws {
         let jsonString = """
             {
@@ -780,7 +780,7 @@ final class NautaSdkTests: XCTestCase {
                                                                 "tipo":"NEWPASSWORD",
                                                                 "orden":"3"
                                                             }}},
-                                                    
+
                                                     "Recuperar contraseña":{
                                                         "operacion":"Recuperar contraseña",
                                                         "url":"recuperarPasswordCorreo",
@@ -812,7 +812,7 @@ final class NautaSdkTests: XCTestCase {
                                                                 "tipo":"PASSWORD",
                                                                 "orden":"3"
                                                             }}}}}},
-                                        
+
                                         "Servicios móviles":{
                                             "5351872843":{
                                                 "perfil":{
@@ -932,5 +932,8 @@ final class NautaSdkTests: XCTestCase {
                                 "resultado":"ok"
                             }}
         """
+        let jsonData = jsonString.data(using: .utf8)!
+        let loginResponse = try JSONDecoder().decode(LoginResponse.self, from: jsonData)
+        print("✅ DEBUG: JSON RESPONSE SUCCESS \(loginResponse)")
     }
 }
