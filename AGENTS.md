@@ -8,7 +8,7 @@
 4. Mostrar siempre `git diff` antes de proponer un commit.
 5. Si `MEMORY.md` contradice este archivo, prevalece `MEMORY.md`; avisar de la contradicción.
 6. Una vez terminados los cambios preguntar si es necesario hacer `swift build` y luego `swift test`
-7. Preguntar Es necesario lanzar el agente Planificator con su subagentes después de los cambios realizados?.
+7. Preguntar Es necesario lanzar el agente Planificator con su subagentes después de los cambios realizados?. Si yo respondo que sí entonces lo lanzas y si respondo que no entonces terminas.
 
 ## Agentes y SubAgentes
 - **Planificador** (primary): crea planes, no edita ni ejecuta comandos.
